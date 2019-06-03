@@ -1,0 +1,46 @@
+# 使用 Visual Studio Code 打开文件
+# 需要添加扩展(插件) -> 'REST Client'
+
+
+### 轮询：订阅者注册以供后台记录 
+# (因为这个api有点特殊，但又没必要重新写一个controller，所以暂用PUT方法替代)
+
+PUT http://localhost:5000/api/polling/subscribe/test_id
+
+
+### 轮询：发送消息
+
+POST http://localhost:5000/api/polling
+content-type: application/json
+
+{
+    "user": "user",
+    "message": "hello"
+}
+
+### 轮询：获取新消息
+
+GET http://localhost:5000/api/polling/test_id
+
+
+
+
+### 长轮询：订阅者注册以供后台记录 
+# (因为这个api有点特殊，但又没必要重新写一个controller，所以暂用PUT方法替代)
+
+PUT http://localhost:5000/api/longPolling/subscribe/test_id
+
+
+### 长轮询：发送消息
+
+POST http://localhost:5000/api/longPolling
+content-type: application/json
+
+{
+    "user": "user",
+    "message": "hello"
+}
+
+### 长轮询：获取新消息
+
+GET http://localhost:5000/api/longPolling/test_id
