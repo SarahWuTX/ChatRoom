@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import element-ui CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+  </head>
+  <body style="background-color: whitesmoke">
+    <div id="app" style="margin: 5% 0 0 30%;">
+      <div>
+        用户名：<br />
+        <el-input
+          placeholder="请输入昵称"
+          v-model="user"
+          clearable
+          id="userInput"
+          style="width: 30%"
+        >
+        </el-input>
+        <br />
+        <br />
+        信息内容：<br />
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="请输入内容"
+          v-model="msg"
+          :autosize="{ minRows: 2}"
+          clearable
+          id="messageInput"
+          style="width: 50%"
+        >
+        </el-input>
+        <el-button type="primary" plain id="sendButton" value="Send Message"
+          >发送</el-button
+        >
+      </div>
+      <div>
+        <br />
+        <p>消息记录：</p>
+        <ul id="messagesList"></ul>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import element-ui JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <!-- import signalr JavaScript -->
+  <script src="./signalr.js"></script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: function() {
+        return { msg: "", user: "" };
+      }
+    });
+  </script>
+</html>
+
+<script>
+  "use strict";
+  var connection = new signalR.HubConnectionBuilder()
+    .withUrl("http://localhost:5000/chatHub", {
+      skipNegotiation: true,
+      transport: signalR.HttpTransportType.WebSockets
+    })
+    .build();
+
+  //Disable send button until connection is established
+  document.getElementById("sendButton").disabled = true;
+
+  connection.on("ReceiveMessage", function(user, message) {
+    var msg = message
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;");
+    var msgEle = document.createElement("span");
+    msgEle.textContent = msg;
+    msgEle.style =
+      "background-color: #e6e6e6; border-radius: 5rem; padding: .25rem 1rem; width: auto";
+    var userEle = document.createElement("span");
+    userEle.textContent = user + " :  ";
+    var li = document.createElement("li");
+    li.appendChild(userEle);
+    li.appendChild(msgEle);
+    li.style = "list-style: none; margin: 1rem 0; ";
+    document.getElementById("messagesList").appendChild(li);
+  });
+
+  connection
+    .start()
+    .then(function() {
+      document.getElementById("sendButton").disabled = false;
+    })
+    .catch(function(err) {
+      return console.error(err.toString());
+    });
+
+  document
+    .getElementById("sendButton")
+    .addEventListener("click", function(event) {
+      var user = document.getElementById("userInput").value;
+      var message = document.getElementById("messageInput").value;
+      if (user == "") {
+        alert("用户名不能为空");
+      } else if (message == "") {
+        alert("不能发送空内容");
+      } else {
+        connection.invoke("SendMessage", user, message).catch(function(err) {
+          return console.error(err.toString());
+        });
+      }
+      event.preventDefault();
+    });
+</script>

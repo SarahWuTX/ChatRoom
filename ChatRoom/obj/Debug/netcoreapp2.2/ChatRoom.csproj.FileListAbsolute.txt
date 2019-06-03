@@ -1,0 +1,14 @@
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/bin/Debug/netcoreapp2.2/ChatRoom.deps.json
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/bin/Debug/netcoreapp2.2/ChatRoom.runtimeconfig.json
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/bin/Debug/netcoreapp2.2/ChatRoom.runtimeconfig.dev.json
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/bin/Debug/netcoreapp2.2/ChatRoom.dll
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/bin/Debug/netcoreapp2.2/ChatRoom.pdb
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.csprojAssemblyReference.cache
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.csproj.CoreCompileInputs.cache
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.RazorAssemblyInfo.cache
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.RazorAssemblyInfo.cs
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.AssemblyInfoInputs.cache
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.AssemblyInfo.cs
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.RazorTargetAssemblyInfo.cache
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.dll
+/Users/SarahWuTX/project/vs/ChatRoom/ChatRoom/obj/Debug/netcoreapp2.2/ChatRoom.pdb

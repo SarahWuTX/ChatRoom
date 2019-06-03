@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- import CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/element-ui/lib/theme-chalk/index.css"
+    />
+  </head>
+  <body style="background-color: whitesmoke">
+    <div id="app" style="margin: 5% 0 0 30%;">
+      <div>
+        用户名：<br />
+        <el-input
+          placeholder="请输入昵称"
+          v-model="user"
+          clearable
+          id="userInput"
+          style="width: 30%"
+        >
+        </el-input>
+        <br />
+        <br />
+        信息内容：<br />
+        <el-input
+          type="textarea"
+          autosize
+          placeholder="请输入内容"
+          v-model="msg"
+          :autosize="{ minRows: 2}"
+          clearable
+          id="messageInput"
+          style="width: 50%"
+        >
+        </el-input>
+        <el-button
+          type="primary"
+          plain
+          id="sendButton"
+          value="Send Message"
+          @click="send_msg"
+          >发送</el-button
+        >
+      </div>
+      <div>
+        <br />
+        <p>消息记录：</p>
+        <ul id="messagesList"></ul>
+      </div>
+    </div>
+  </body>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <script src="https://cdn.staticfile.org/vue-resource/1.5.1/vue-resource.min.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script>
+    new Vue({
+      el: "#app",
+      data: function() {
+        return { msg: "", user: "", id: "" };
+      },
+      mounted() {
+        this.id = Math.random()
+          .toString(36)
+          .substr(2);
+        this.subscribe();
+        setTimeout(this.polling, 3000);
+      },
+
+      methods: {
+        subscribe() {
+          this.$http
+            .put("http://localhost:5000/api/longPolling/subscribe/" + this.id)
+            .catch(error => {
+              alert("请求失败");
+            });
+        },
+        polling() {
+          this.$http
+            .get("http://localhost:5000/api/longPolling/" + this.id)
+            .then(res => {
+              var data = res.body;
+              for (var i = 0; i < data.length; i++) {
+                this.add_msg(data[i].user, data[i].message);
+              }
+              this.polling();
+            });
+        },
+        add_msg(user, message) {
+          var msg = message
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;");
+          var msgEle = document.createElement("span");
+          msgEle.textContent = msg;
+          msgEle.style =
+            "background-color: #e6e6e6; border-radius: 5rem; padding: .25rem 1rem; width: auto";
+          var userEle = document.createElement("span");
+          userEle.textContent = user + " :  ";
+          var li = document.createElement("li");
+          li.appendChild(userEle);
+          li.appendChild(msgEle);
+          li.style = "list-style: none; margin: 1rem 0; ";
+          document.getElementById("messagesList").appendChild(li);
+        },
+        send_msg() {
+          this.$http
+            .post("http://localhost:5000/api/longPolling", {
+              user: this.user,
+              message: this.msg
+            })
+            .catch(error => {
+              alert("发送失败");
+            });
+        }
+      }
+    });
+  </script>
+  <script src="./signalr.js"></script>
+</html>
